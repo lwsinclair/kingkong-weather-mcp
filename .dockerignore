@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Development files
+.env
+.env.local
+.env.example
+test_*.py
+debug_*.py
+working_*.py
+*_test.py
+*.md
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# OS files
+*.DS_Store
+Thumbs.db
+
+# Docker files (not needed in container)
+Dockerfile
+docker-compose.yml
+.dockerignore

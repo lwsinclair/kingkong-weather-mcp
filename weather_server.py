@@ -431,28 +431,14 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    print("🦍 KING KONG'S REAL WEATHER MCP SERVER!")
-    print("=" * 60)
-    print("🌤️  LIVE WEATHER DATA FROM OPENWEATHERMAP API")
-    print("=" * 60)
-    print()
-    print("🔧 Available Tools:")
-    print("  - get_current_weather: Get weather by city name")
-    print("  - get_weather_by_coordinates: Get weather by lat/lng")
-    print("  - get_weather_summary: Quick weather overview")
-    print("  - check_api_status: Test API connection")
-    print()
-    print("📚 Available Resources:")
-    print("  - config://weather-api: API configuration")
-    print("  - data://supported-cities: Popular cities list")
-    print()
-    print("💡 Setup Instructions:")
-    print("  1. Get free API key: https://openweathermap.org/api")
-    print("  2. Set environment variable: OPENWEATHER_API_KEY=your_key")
-    print("  3. Test with: get_current_weather('London')")
-    print()
-    print("🦍 KING KONG IS READY TO DOMINATE THE WEATHER! ⚡")
-    print("=" * 60)
+    # Reduced startup messages for STDIO deployment
+    startup_msg = os.getenv("SHOW_STARTUP", "true").lower() == "true"
+
+    if startup_msg:
+        print("🦍 KING KONG'S WEATHER MCP SERVER STARTING...")
+        print("🌤️ OpenWeatherMap API Integration Ready")
+        if not API_KEY:
+            print("⚠️  Set OPENWEATHER_API_KEY environment variable")
 
     try:
         # Register cleanup
@@ -460,26 +446,34 @@ if __name__ == "__main__":
 
         atexit.register(lambda: asyncio.run(cleanup()))
 
-        # Parse command line arguments
-        args = parse_args()
-
-        # Run the server with specified transport
-        if args.transport == "streamable-http":
-            print(f"🌐 Starting HTTP server on {args.host}:{args.port}")
-            print(
-                f"🏥 Health check available at: http://{args.host}:{args.port}/health"
-            )
-            mcp.run(transport="streamable-http", host=args.host, port=args.port)
-        elif args.transport == "sse":
-            print(f"📡 Starting SSE server on {args.host}:{args.port}")
-            mcp.run(transport="sse", host=args.host, port=args.port)
-        else:
-            print("📟 Starting STDIO server for local testing")
+        # Check if running in deployment environment
+        if os.getenv("SMITHERY_DEPLOYMENT") == "true":
+            # For Smithery deployment - always use STDIO
             mcp.run(transport="stdio")
+        else:
+            # Parse command line arguments for local development
+            args = parse_args()
+
+            # Run the server with specified transport
+            if args.transport == "streamable-http":
+                if startup_msg:
+                    print(f"🌐 HTTP server: http://{args.host}:{args.port}")
+                mcp.run(transport="streamable-http", host=args.host, port=args.port)
+            elif args.transport == "sse":
+                if startup_msg:
+                    print(f"📡 SSE server: http://{args.host}:{args.port}")
+                mcp.run(transport="sse", host=args.host, port=args.port)
+            else:
+                if startup_msg:
+                    print("📟 STDIO server ready")
+                mcp.run(transport="stdio")
 
     except KeyboardInterrupt:
-        print("\n🦍 King Kong shutting down gracefully...")
+        if startup_msg:
+            print("\n🦍 King Kong shutting down...")
         asyncio.run(cleanup())
     except Exception as e:
-        print(f"❌ Server failed to start: {e}")
+        if startup_msg:
+            print(f"❌ Server error: {e}")
         asyncio.run(cleanup())
+        raise
