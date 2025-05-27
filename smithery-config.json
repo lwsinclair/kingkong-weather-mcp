@@ -1,0 +1,76 @@
+{
+    "name": "kingkong-weather-mcp",
+    "displayName": "🦍 King Kong Weather MCP",
+    "version": "1.0.0",
+    "description": "Professional weather MCP server with live OpenWeatherMap API integration. Built by King Kong for the MCP workshop!",
+    "author": {
+        "name": "King Kong Workshop Champion",
+        "email": "abdirashidv@gmail.com",
+        "url": "https://github.com/abdirashid-dv"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/abdirashid-dv/kingkong-weather-mcp"
+    },
+    "license": "MIT",
+    "keywords": [
+        "mcp",
+        "weather",
+        "openweathermap",
+        "api",
+        "fastmcp",
+        "workshop",
+        "kingkong",
+        "real-time"
+    ],
+    "categories": ["Data Retrieval", "External APIs", "Weather Services"],
+    "deployment": {
+        "type": "http",
+        "transport": "streamable-http",
+        "port": 8080,
+        "health_check": "/health",
+        "environment_variables": {
+            "required": ["OPENWEATHER_API_KEY"],
+            "optional": ["DEFAULT_UNITS", "WEATHER_API_TIMEOUT"]
+        }
+    },
+    "features": {
+        "real_time_data": true,
+        "external_api": true,
+        "error_handling": true,
+        "multiple_formats": true,
+        "coordinates_support": true,
+        "resource_templates": true
+    },
+    "pricing": {
+        "model": "free",
+        "external_dependencies": {
+            "openweathermap": {
+                "type": "freemium",
+                "free_tier": "1000 calls/day",
+                "signup_url": "https://openweathermap.org/api"
+            }
+        }
+    },
+    "documentation": {
+        "setup_guide": "README.md",
+        "api_reference": "Built-in MCP introspection",
+        "examples": [
+            {
+                "title": "Basic Weather Query",
+                "description": "Get current weather for London",
+                "code": "get_current_weather({\"city\": \"London\", \"country_code\": \"GB\"})"
+            },
+            {
+                "title": "Coordinates Weather",
+                "description": "Get weather by latitude and longitude",
+                "code": "get_weather_by_coordinates({\"latitude\": 40.7128, \"longitude\": -74.0060})"
+            }
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/abdirashid-dv/kingkong-weather-mcp/issues",
+        "documentation": "https://github.com/abdirashid-dv/kingkong-weather-mcp/blob/main/README.md",
+        "community": "MCP Workshop Discord"
+    }
+}

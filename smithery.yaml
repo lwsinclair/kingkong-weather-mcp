@@ -1,0 +1,158 @@
+name: kingkong-weather-mcp
+version: "1.0.0"
+description: "🦍 King Kong's Real Weather MCP Server - Live OpenWeatherMap Integration"
+author: "King Kong Workshop Champion"
+homepage: "https://github.com/abdirashid-dv/kingkong-weather-mcp"
+repository: "https://github.com/abdirashid-dv/kingkong-weather-mcp"
+license: "MIT"
+
+# MCP Server Configuration
+mcp:
+    server:
+        name: "KingKongWeatherMCP"
+        version: "1.0.0"
+        description: "Professional weather MCP server with live OpenWeatherMap API integration"
+
+    # Connection configuration
+    connection:
+        type: "http"
+        transport: "streamable-http"
+        url: "https://your-deployment-url.com/mcp"
+
+    # Configuration schema for users
+    config_schema:
+        type: "object"
+        properties:
+            api_key:
+                type: "string"
+                description: "OpenWeatherMap API key (get free at openweathermap.org/api)"
+                required: true
+            default_units:
+                type: "string"
+                description: "Default temperature units"
+                enum: ["celsius", "fahrenheit", "kelvin"]
+                default: "celsius"
+            timeout:
+                type: "number"
+                description: "API request timeout in seconds"
+                default: 10
+                minimum: 5
+                maximum: 30
+
+# Available Tools
+tools:
+    - name: "get_current_weather"
+      description: "Get current weather for any city using live OpenWeatherMap data"
+      input_schema:
+          type: "object"
+          properties:
+              city:
+                  type: "string"
+                  description: "City name (e.g., 'London', 'New York')"
+              country_code:
+                  type: "string"
+                  description: "Optional 2-letter country code (e.g., 'US', 'GB')"
+              units:
+                  type: "string"
+                  enum: ["celsius", "fahrenheit", "kelvin"]
+                  default: "celsius"
+          required: ["city"]
+
+    - name: "get_weather_by_coordinates"
+      description: "Get weather by geographical coordinates"
+      input_schema:
+          type: "object"
+          properties:
+              latitude:
+                  type: "number"
+                  minimum: -90
+                  maximum: 90
+              longitude:
+                  type: "number"
+                  minimum: -180
+                  maximum: 180
+              units:
+                  type: "string"
+                  enum: ["celsius", "fahrenheit", "kelvin"]
+                  default: "celsius"
+          required: ["latitude", "longitude"]
+
+    - name: "get_weather_summary"
+      description: "Get concise weather summary for quick updates"
+      input_schema:
+          type: "object"
+          properties:
+              city:
+                  type: "string"
+                  description: "City name"
+          required: ["city"]
+
+    - name: "check_api_status"
+      description: "Check OpenWeatherMap API connectivity and key validity"
+
+# Available Resources
+resources:
+    - uri: "config://weather-api"
+      name: "Weather API Configuration"
+      description: "Get API configuration and supported features"
+
+    - uri: "data://supported-cities"
+      name: "Popular Cities List"
+      description: "List of popular cities for testing and examples"
+
+# Available Prompts
+prompts:
+    - name: "weather_report_prompt"
+      description: "Generate detailed weather reporting prompts"
+
+    - name: "travel_weather_prompt"
+      description: "Generate travel weather planning prompts"
+
+# Tags for discovery
+tags:
+    - "weather"
+    - "api"
+    - "openweathermap"
+    - "real-time"
+    - "climate"
+    - "forecast"
+    - "workshop"
+    - "kingkong"
+
+# Categories
+categories:
+    - "data-retrieval"
+    - "external-apis"
+    - "weather-services"
+
+# Requirements
+requirements:
+    - "OPENWEATHER_API_KEY environment variable"
+    - "Internet connection for API access"
+    - "Python 3.8+"
+
+# Security scan settings
+security:
+    scan_enabled: true
+
+# Usage examples
+examples:
+    - description: "Get London weather"
+      tool: "get_current_weather"
+      input:
+          city: "London"
+          country_code: "GB"
+
+    - description: "Get NYC weather in Fahrenheit"
+      tool: "get_current_weather"
+      input:
+          city: "New York"
+          country_code: "US"
+          units: "fahrenheit"
+
+    - description: "Get weather by coordinates"
+      tool: "get_weather_by_coordinates"
+      input:
+          latitude: 40.7128
+          longitude: -74.0060
+          units: "celsius"
