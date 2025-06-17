@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/abdirashid-dv-kingkong-weather-mcp-badge.png)](https://mseep.ai/app/abdirashid-dv-kingkong-weather-mcp)
+
 # 🦍 King Kong's Weather MCP Server
 
 A professional Model Context Protocol (MCP) server providing real-time weather data through OpenWeatherMap API integration.
